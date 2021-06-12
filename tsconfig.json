@@ -1,0 +1,10 @@
+{
+    "compilerOptions": 
+    {
+        "removeComments": true,
+        "outFile": "js/main.js",
+        //"outDir": "js",
+        "target": "es2015",//"ES3"
+        "watch": true
+    }
+}
