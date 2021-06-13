@@ -1,5 +1,34 @@
-let currTotal = 0;
-let playerNow = true;
+window.onload = function()
+{
+    let newGameBtn = document.getElementById("new_game");
+    newGameBtn.onclick = createNewGame;
+    document.getElementById("roll").onclick = rollDie;
+    document.getElementById("endTurn").onclick = holdDie;
+
+    score1 = parseInt((<HTMLInputElement>document.getElementById("score1")).value);
+    score2 = parseInt((<HTMLInputElement>document.getElementById("score2")).value);
+    currTotal = parseInt((<HTMLInputElement>document.getElementById("current")).value);
+
+    // player1 = (<HTMLInputElement>document.getElementById("player1")).value;
+    // player2 = (<HTMLInputElement>document.getElementById("player2")).value;
+
+}
+//let player1 = (<HTMLInputElement>document.getElementById("player1")).value;
+//let player2 = (<HTMLInputElement>document.getElementById("player2")).value;
+
+let score1;
+let score2;
+let player1;
+let player2;
+let currTotal;
+let playerNow = false;
+score1 = 0;
+score2 = 0;
+player1 = "";
+player2 = "";
+currTotal = 0;
+
+
 
 // function generateRandomValue(minValue:number, maxValue:number):number
 // {
@@ -14,73 +43,68 @@ let playerNow = true;
 
 function changePlayers():void
 {
-    let currentPlayerName = document.getElementById("current").innerText;
-    let player1Name = (<HTMLInputElement>document.getElementById("player1")).value;
-    let player2Name = (<HTMLInputElement>document.getElementById("player2")).value;
+    
     playerNow = !playerNow;
     currTotal = 0;
-    if (playerNow)
+    if (playerNow == true)
     {
-        currentPlayerName = player1Name;
+        (<HTMLElement>document.getElementById("current")).innerHTML = player1;
+        
     }
     else
     {
-        currentPlayerName = player2Name;
+        (<HTMLElement>document.getElementById("current")).innerHTML = player2;
     }
 
     //swap from player to player by comparing current name to player names
     //set currentPlayerName to the next player
 }
 
-window.onload = function()
-{
-    let newGameBtn = document.getElementById("new_game");
-    newGameBtn.onclick = createNewGame;
-
-    document.getElementById("roll").onclick = rollDie;
-
-    document.getElementById("hold").onclick = holdDie;
-}
 
 function createNewGame()
 {
+    //alert("newgame clicked");
     //set player 1 and player 2 scores to 0
+
     score1 = 0;
-    score2=0;
-    //player1 = "";
-    //player2 = "";
+    score2 = 0;
+    player1 = (<HTMLInputElement>document.getElementById("player1")).value;
+    player2 = (<HTMLInputElement>document.getElementById("player2")).value;
 
-    //verify each player has a name
-    
     //if both players don't have a name display error
-    if (player1.value == "" || player2 == "")
+    if (player1 == "" || player2 == "")
         {
-            alert "Both players must have names."
+            alert("Both players must have names.");
+            createNewGame;
         }
-    
-
-    //if both players do have a name start the game!
-    document.getElementById("turn").classList.add("open");
-    (<HTMLInputElement>document.getElementById("total")).value = "0";
-    //lock in player names and then change players
-    document.getElementById("player1").setAttribute("disabled", "disabled");
-    document.getElementById("player2").setAttribute("disabled", "disabled");
-    changePlayers();
+    else
+    {
+        //if both players do have a name start the game!
+        document.getElementById("turn").classList.add("open");
+        (<HTMLInputElement>document.getElementById("total")).value = "0";
+        //lock in player names and then change players
+        document.getElementById("player1").setAttribute("disabled", "disabled");
+        document.getElementById("player2").setAttribute("disabled", "disabled");
+        changePlayers();
+    }
 }
 
-function rollDie():void
+function rollDie()
 {
-    let currTotal = parseInt((<HTMLInputElement>document.getElementById("total")).value);
+    // alert("its rolled");
+    //let currTotal = parseInt((<HTMLInputElement>document.getElementById("total")).value);
     
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
 
     //if the roll is 1
     //  change players
     //  set current total to 0
+    let myDie:Die = new Die();
+    myDie.roll();
+    let dieRoll = myDie.faceUpValue;
     if (dieRoll == 1)
     {
         changePlayers;
-        currTotal = 0;
     }
     else
     {
@@ -96,19 +120,19 @@ function rollDie():void
 
 function holdDie():void
 {
+    // alert("hold die clicked");
     //get the current turn total
     //determine who the current player is
     //add the current turn total to the player's total score
-    if (playerNow)
+    if (playerNow == true)
     {
-        score1.value += currTotal;
+        score1 += currTotal;
     }
     else
     {
-        score2.value += currTotal
+        score2 += currTotal
     }
     //reset the turn total to 0
-    currTotal = 0;
     //change players
     changePlayers();    
 }
