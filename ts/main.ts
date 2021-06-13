@@ -7,26 +7,21 @@ window.onload = function()
 
     score1 = parseInt((<HTMLInputElement>document.getElementById("score1")).value);
     score2 = parseInt((<HTMLInputElement>document.getElementById("score2")).value);
-    currTotal = parseInt((<HTMLInputElement>document.getElementById("current")).value);
+    //currTotal = parseInt((<HTMLInputElement>document.getElementById("current")).value);
 
-    // player1 = (<HTMLInputElement>document.getElementById("player1")).value;
-    // player2 = (<HTMLInputElement>document.getElementById("player2")).value;
 
 }
-//let player1 = (<HTMLInputElement>document.getElementById("player1")).value;
-//let player2 = (<HTMLInputElement>document.getElementById("player2")).value;
 
 let score1;
 let score2;
 let player1;
 let player2;
-let currTotal;
+let currTotal = 0;
 let playerNow = false;
 score1 = 0;
 score2 = 0;
 player1 = "";
 player2 = "";
-currTotal = 0;
 
 
 
@@ -42,8 +37,8 @@ currTotal = 0;
 
 
 function changePlayers():void
-{
-    
+{    
+    whoWon();
     playerNow = !playerNow;
     currTotal = 0;
     if (playerNow == true)
@@ -91,24 +86,22 @@ function createNewGame()
 
 function rollDie()
 {
-    // alert("its rolled");
-    //let currTotal = parseInt((<HTMLInputElement>document.getElementById("total")).value);
-    
+    //let currTotal = parseInt((<HTMLInputElement>document.getElementById("total")).value);    
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
-
     //if the roll is 1
-    //  change players
-    //  set current total to 0
     let myDie:Die = new Die();
     myDie.roll();
     let dieRoll = myDie.faceUpValue;
+    document.getElementById("die").innerHTML = String(dieRoll);
     if (dieRoll == 1)
     {
-        changePlayers;
+        changePlayers();
+        document.getElementById("total").innerHTML = String(currTotal);
     }
     else
     {
-        currTotal+= dieRoll;
+        currTotal += dieRoll;
+        document.getElementById("total").innerHTML = String(currTotal);
     }
     
     //if the roll is greater than 1
@@ -127,12 +120,28 @@ function holdDie():void
     if (playerNow == true)
     {
         score1 += currTotal;
+        document.getElementById("score1").innerHTML = String(score1);
     }
     else
     {
         score2 += currTotal
+        document.getElementById("score2").innerHTML = String(score2);
     }
     //reset the turn total to 0
     //change players
+    whoWon();
     changePlayers();    
+}
+function whoWon()
+{
+    if (score1 >= 100)
+    {
+        alert(player1+" is the winner!");
+        createNewGame();
+    }
+    if (score2 >= 100)
+    {
+        alert(player2+" is the winner!");
+        createNewGame();
+    }
 }

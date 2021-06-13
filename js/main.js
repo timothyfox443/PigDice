@@ -17,20 +17,19 @@ window.onload = function () {
     document.getElementById("endTurn").onclick = holdDie;
     score1 = parseInt(document.getElementById("score1").value);
     score2 = parseInt(document.getElementById("score2").value);
-    currTotal = parseInt(document.getElementById("current").value);
 };
 let score1;
 let score2;
 let player1;
 let player2;
-let currTotal;
+let currTotal = 0;
 let playerNow = false;
 score1 = 0;
 score2 = 0;
 player1 = "";
 player2 = "";
-currTotal = 0;
 function changePlayers() {
+    whoWon();
     playerNow = !playerNow;
     currTotal = 0;
     if (playerNow == true) {
@@ -61,19 +60,35 @@ function rollDie() {
     let myDie = new Die();
     myDie.roll();
     let dieRoll = myDie.faceUpValue;
+    document.getElementById("die").innerHTML = String(dieRoll);
     if (dieRoll == 1) {
-        changePlayers;
+        changePlayers();
+        document.getElementById("total").innerHTML = String(currTotal);
     }
     else {
         currTotal += dieRoll;
+        document.getElementById("total").innerHTML = String(currTotal);
     }
 }
 function holdDie() {
     if (playerNow == true) {
         score1 += currTotal;
+        document.getElementById("score1").innerHTML = String(score1);
     }
     else {
         score2 += currTotal;
+        document.getElementById("score2").innerHTML = String(score2);
     }
+    whoWon();
     changePlayers();
+}
+function whoWon() {
+    if (score1 >= 100) {
+        alert(player1 + " is the winner!");
+        createNewGame();
+    }
+    if (score2 >= 100) {
+        alert(player2 + " is the winner!");
+        createNewGame();
+    }
 }
